@@ -31,7 +31,10 @@ header > p {
     margin: auto;
 }
 .meme > img {
-    width: 100%;
+    display:block;
+    margin:auto;
+    width: 1280px;
+    height: 720px;
 }
 .meme > h1 {
     position: absolute;
