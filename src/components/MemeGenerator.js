@@ -25,7 +25,6 @@ const MemeGenerator = observer (() => {
                         value={meme.topText}
                         onChange={(event) => meme.inputTopText(event)}
                         placeholder="Top Text"
-
                     />
 
                     <input
@@ -35,7 +34,7 @@ const MemeGenerator = observer (() => {
                         placeholder="Bottom Text"
                     />
 
-                    <button onClick={meme.pressingGenBtn()}>Gen</button>
+                    <button onClick={meme.restToAPI()}>Gen</button>
                 </form>
 
                 <div className={"meme"}>

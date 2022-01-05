@@ -1,4 +1,4 @@
-import {makeAutoObservable} from "mobx";
+import {runInAction, makeAutoObservable} from "mobx";
 
 class Meme {
     constructor() {
@@ -7,10 +7,20 @@ class Meme {
 
     topText = "";
     bottomText = "";
-    randomImg = "http://i.imgflip.com/1bij.jpg";
     allMemeImgs = [];
+    randomImg = "https://i.imgflip.com/1ur9b0.jpg";
     error = null;
     isLoaded = false;
+
+    genRandImgMeme = () => {
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        const randNum = getRandomInt(0, this.allMemeImgs.length);
+
+        return this.allMemeImgs[randNum].url;
+    }
 
     inputTopText = (event) => {
         this.topText = event.target.value;
@@ -23,14 +33,7 @@ class Meme {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        function getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min)) + min;
-        }
-
-        const randNum = getRandomInt(0, this.allMemeImgs.length);
-        const randImgMeme = this.allMemeImgs[randNum].url;
-
-        this.randomImg = randImgMeme;
+        this.randomImg = this.genRandImgMeme();
         this.topText = "";
         this.bottomText = "";
     }
@@ -42,18 +45,19 @@ class Meme {
                 (result) => {
                     const {memes} = result.data;
 
-                    this.isLoaded = true;
                     this.allMemeImgs = memes;
+
+                    runInAction(() => {
+                        this.isLoaded = true;
+                    });
                 },
                 (error) => {
-                    this.isLoaded = true;
-                    this.error = error;
+                    runInAction(() => {
+                        this.isLoaded = true;
+                        this.error = error;
+                    });
                 }
-            )
-    }
-
-    pressingGenBtn = () => {
-        this.restToAPI();
+            );
     }
 }
 
